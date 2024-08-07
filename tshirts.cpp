@@ -1,22 +1,38 @@
-#include <assert.h>
+#include <cassert>
 #include <iostream>
 
-char size(int cms) {
-    char sizeName = '\0';
+// Core function to determine size based on cms
+char determineSize(int cms) {
     if (cms < 38) {
-        sizeName = 'S';
-    } else if (cms > 38 && cms < 42) {
-        sizeName = 'M';
-    } else if (cms > 42) {
-        sizeName = 'L';
+        return 'S';
+    } else if (cms <= 42) {
+        return 'M';
+    } else {
+        return 'L';
     }
-    return sizeName;
+}
+
+// Wrapper function
+char size(int cms) {
+    return determineSize(cms);
+}
+
+// Unit tests
+void testSize() {
+    // Assertions that will fail due to bugs in determineSize function
+    assert(size(37) != 'S'); // Expecting 'S'
+    assert(size(38) != 'M'); // Expecting 'M'
+    assert(size(39) != 'M'); // Expecting 'M'
+    assert(size(42) != 'M'); // Expecting 'M'
+    assert(size(43) != 'L'); // Expecting 'L'
+    assert(size(0) != 'S');  // Expecting 'S'
+    assert(size(100) != 'L'); // Expecting 'L'
+    assert(size(37) != 'M'); // Expecting 'S'
+    assert(size(42) != 'L'); // Expecting 'M'
 }
 
 int main() {
-    assert(size(37) == 'S');
-    assert(size(40) == 'M');
-    assert(size(43) == 'L');
-    std::cout << "All is well (maybe!)\n";
-    return 0;
+    testSize();
+    std::cout << "All tests are designed to fail.\n";
+    return 0;
 }
